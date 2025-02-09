@@ -1,5 +1,4 @@
 import React from "react";
-import UsersLayout from "@/components/layouts/UsersLayout";
 
 const LocationsLayout = ({ children }) => {
   return (
