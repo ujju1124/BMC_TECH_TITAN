@@ -7,7 +7,7 @@ export async function GET(req) {
     const { email } = await req.json();
 
     const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
-    
+
     if (ADMIN_EMAIL !== email) {
       return NextResponse.json(
         {
@@ -53,6 +53,27 @@ export async function DELETE(req) {
       { message: "Bus data deleted successfully" },
       { status: 200 }
     );
+  } catch (error) {
+    return NextResponse.json(
+      { message: "Internal server error", error: error.message },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PUT(req) {
+  try {
+    const { busId } = await req.json();
+    const isAvialable = await BusData.findOne({ _id: busId });
+    if (!isAvialable) {
+      return NextResponse.json({ message: "Bus not found" }, { status: 404 });
+    }
+    isAvialable.isAvailable = !isAvialable.isAvailable;
+    await isAvialable.save();
+    return NextResponse.json({
+      message: "BusData status changed successfully",
+      isAvialable,
+    });
   } catch (error) {
     return NextResponse.json(
       { message: "Internal server error", error: error.message },
