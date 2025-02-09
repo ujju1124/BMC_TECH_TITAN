@@ -1,11 +1,19 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  Polyline,
+} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import L from "leaflet";
 
 const LocationPage = () => {
   const [busData, setBusData] = useState([]);
   const [busStops, setBusStops] = useState([]);
+  const [path, setPath] = useState([]);
 
   useEffect(() => {
     const getLocations = async () => {
@@ -13,13 +21,23 @@ const LocationPage = () => {
         const response = await fetch("/api/busdata/", { method: "GET" });
         const data = await response.json();
         setBusData([...data.busData]);
-        setBusStops([...data.busData[0]?.stops]);
+        setBusStops([...data.busData[0]?.stops]); // Assuming busData[0] contains the stops
       } catch (error) {
         console.error("Error while fetching the locations:", error);
       }
     };
     getLocations();
   }, []);
+
+  useEffect(() => {
+    if (busStops.length > 0) {
+      const stopCoords = busStops.map((stop) => [
+        stop.latitude,
+        stop.longitude,
+      ]);
+      setPath(stopCoords); // Set the path for drawing the line
+    }
+  }, [busStops]);
 
   if (!busData.length || !busStops.length) {
     return (
@@ -54,20 +72,33 @@ const LocationPage = () => {
             ))}
           </ul>
         </div>
+
         <MapContainer
-          center={[
-            busData[0]?.stops[0]?.latitude,
-            busData[0]?.stops[0]?.longitude,
-          ]}
+          center={[busStops[0]?.latitude, busStops[0]?.longitude]}
           zoom={14}
           className="h-64 w-full mt-4 rounded-lg"
         >
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+          {/* Marking stops */}
           {busStops.map((stop) => (
-            <Marker key={stop._id} position={[stop.latitude, stop.longitude]}>
+            <Marker
+              key={stop._id}
+              position={[stop.latitude, stop.longitude]}
+              icon={
+                new L.Icon({
+                  iconUrl:
+                    "https://cdn-icons-png.flaticon.com/512/64/64572.png", // Change the icon URL if you prefer a custom one
+                  iconSize: [20, 20],
+                })
+              }
+            >
               <Popup>{stop.stopName}</Popup>
             </Marker>
           ))}
+          {/* Draw path (Polyline) between the bus stops */}
+          {path.length > 0 && (
+            <Polyline positions={path} color="blue" weight={4} />
+          )}
         </MapContainer>
       </div>
     </div>
