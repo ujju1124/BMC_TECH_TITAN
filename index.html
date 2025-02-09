@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Urban Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Smart Urban Dashboard</h1>
+    <nav>
+      <ul>
+        <li><a href="#traffic">Traffic Management</a></li>
+        <li><a href="#admin">Admin Dashboard</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <section id="overview">
+      <h2>Welcome to the Smart Urban Dashboard</h2>
+      <p>Optimize urban infrastructure with advanced analytics for traffic, water, and energy management.</p>
+    </section>
+    <section id="traffic">
+        <h2>Traffic Management</h2>
+        <div class="traffic-container">
+          <!-- Public Transport Route Planner -->
+          <div class="route-planner">
+            <h3>Public Transport Route Planner</h3>
+            <input type="text" id="bus-name" placeholder="Enter bus/tempo name">
+            <button onclick="showRoute()">Show Route</button>
+            <div id="map" style="height: 300px; width: 100%;"></div>
+          </div>
+      
+          <!-- Traffic Violation Reporting -->
+          <div class="violation-report">
+            <h3>Report Traffic Violation</h3>
+            <input type="file" id="violation-image" accept="image/*">
+            <input type="text" id="vehicle-number" placeholder="Enter vehicle number">
+            <button onclick="submitViolation()">Submit Report</button>
+          </div>
+      
+          <!-- Pothole Reporting -->
+          <div class="pothole-report">
+            <h3>Report Pothole</h3>
+            <input type="file" id="pothole-image" accept="image/*">
+            <textarea id="pothole-description" placeholder="Describe the pothole"></textarea>
+            <button onclick="submitPothole()">Submit Report</button>
+          </div>
+
+          
+          <div class="carpooling-container">
+            <h3>Find a Carpool Match</h3>
+            <input type="text" id="start-location" placeholder="Enter starting point">
+            <input type="text" id="end-location" placeholder="Enter destination">
+            <input type="time" id="travel-time">
+            <button onclick="findCarpoolMatch()">Find Match</button>
+            <div id="carpool-results" style="margin-top: 15px;">
+              <h3>Available Drivers</h3>
+              <div id="match-results">
+                <p>Enter details to find a match.</p>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </section>
+  </main>
+  <!-- <footer>
+    <p>&copy; 2023 Smart Urban Dashboard</p>
+  </footer> -->
+  <script src="script.js"></script>
+</body>
+</html>
