@@ -22,7 +22,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-black/55 max-h-[100vh] md:max-h-[100vh] lg:max-h-[70vh] -z-10 font-Poppins"></div>
 
         {/* Content */}
-        <div className="relative z-10 text-center text-white px-6 mt-12">
+        <div className="relative z-10 text-center text-white px-6 pt-28">
           <h1 className="text-4xl md:text-6xl font-bold mb-4">
             Innovative Solutions for Modern Problems
           </h1>
@@ -30,7 +30,7 @@ export default function Home() {
             Transforming ideas into reality with cutting-edge technology.
           </p>
         </div>
-        <section className="relative z-10 pt-8 my-[28px] px-6 w-full text-center">
+        <section className="relative z-10 pt-12 mt-[90px] px-6 w-full text-center">
           <h2 className="text-3xl font-bold mb-4 pt-24 lg:text-black text-white">
             About Us
           </h2>

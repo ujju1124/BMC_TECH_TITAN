@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -7,15 +7,10 @@ import { Label } from "@/components/ui/label";
 import { Trash2, Plus, Bus } from "lucide-react";
 
 const BusRouteForm = () => {
-  const [stops, setStops] = useState([
-    { stopName: "", latitude: "", longitude: "", arrivalTime: "" },
-  ]);
+  const [stops, setStops] = useState([{ stopName: "", arrivalTime: "" }]);
 
   const addStop = () => {
-    setStops([
-      ...stops,
-      { stopName: "", latitude: "", longitude: "", arrivalTime: "" },
-    ]);
+    setStops([...stops, { stopName: "", arrivalTime: "" }]);
   };
 
   const removeStop = (index) => {
@@ -25,12 +20,11 @@ const BusRouteForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission here
     console.log("Form submitted");
   };
 
   return (
-    <Card className="w-full max-w-2xl mx-auto">
+    <Card className="w-full max-w-2xl mx-auto text-lg md:text-xl mb-8">
       <CardHeader>
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
@@ -124,30 +118,10 @@ const BusRouteForm = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor={`arrivalTime-${index}`}>Arrival Time</Label>
+                      <Label htmlFor={`arrivalTime-${index}`}>
+                        Arrival Time
+                      </Label>
                       <Input id={`arrivalTime-${index}`} type="time" />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor={`latitude-${index}`}>Latitude</Label>
-                      <Input
-                        id={`latitude-${index}`}
-                        type="number"
-                        step="any"
-                        placeholder="Enter latitude"
-                        required
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor={`longitude-${index}`}>Longitude</Label>
-                      <Input
-                        id={`longitude-${index}`}
-                        type="number"
-                        step="any"
-                        placeholder="Enter longitude"
-                        required
-                      />
                     </div>
                   </div>
                 </div>
