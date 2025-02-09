@@ -1,5 +1,5 @@
 import React from "react";
-import Header from "../../app/Navbar/page";
+import Header from "../../app/_navbar/page";
 import Footer from "../Footer/page";
 
 const UsersLayout = ({ children }) => {
