@@ -13,6 +13,7 @@ const busDataSchema = new Schema(
         arrivalTime: { type: String }, // Optional, can be a timestamp or formatted string
       },
     ],
+    isVerified: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
