@@ -22,6 +22,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "utils/db.js", "models/Bus.models.js", "app/api/route.js", "app/api/busdata/route.js", "app/api/admin/route.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "utils/db.js", "models/Bus.models.js", "app/api/route.js", "app/api/busdata/route.js", "app/api/admin/route.js", "app/admin/page.jsx", "app/not-found.jsx", "app/layout.jsx", "app/page.jsx"],
   "exclude": ["node_modules"]
 }
