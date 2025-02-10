@@ -4,7 +4,7 @@ import { User } from "../../../models/User.model";
 export async function POST(req) {
   try {
     await connectToDatabase();
-    const { clerkId, role, location, activeRoute } = await req.json();
+    const { clerkId, role, location, activeRoute, phoneNumber } = await req.json();
 
     const loca = {
       latitude: location?.latitude ?? null, // Use null if location or latitude is undefined
@@ -23,7 +23,7 @@ export async function POST(req) {
       },
     };
 
-    if (!clerkId || !role) {
+    if (!clerkId || !role || !phoneNumber) {
       return new Response(
         JSON.stringify({ error: "Missing required fields" }),
         {
@@ -37,6 +37,7 @@ export async function POST(req) {
       role,
       location: loca,
       activeRoute: active,
+      phoneNumber,
     });
 
     await newUser.save();

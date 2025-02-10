@@ -25,6 +25,10 @@ const userSchema = new Schema({
       longitude: { type: Number },
     },
   },
+  phoneNumber: {
+    type: String,
+    required: true,
+  },
 });
 
 export const User = models.User || model("User", userSchema);
