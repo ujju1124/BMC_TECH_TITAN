@@ -11,7 +11,6 @@ import {
 
 function Header() {
   const Menu = [
-    { id: 1, name: "Home", path: "/" },
     { id: 2, name: "Services", path: "/services" },
     { id: 3, name: "Locations", path: "/locations" },
   ];
@@ -22,7 +21,7 @@ function Header() {
     <div className="fixed w-full backdrop-blur-sm bg-white/10 shadow-md transition-all duration-300 p-4 flex items-center justify-between rounded-b-lg z-50">
       <div className="flex items-center gap-10">
         <Link href="/">
-          <h1 className="text-xl font-bold text-white cursor-pointer">
+          <h1 className="text-xl font-bold text-black cursor-pointer">
             Path Finder
           </h1>
         </Link>
@@ -31,7 +30,7 @@ function Header() {
         <ul className="md:flex gap-8 hidden">
           {Menu.map((item) => (
             <Link href={item.path} key={item.id}>
-              <li className="cursor-pointer hover:scale-105 transition-all ease-in-out text-white">
+              <li className="cursor-pointer hover:scale-105 transition-all ease-in-out text-black">
                 {item.name}
               </li>
             </Link>
