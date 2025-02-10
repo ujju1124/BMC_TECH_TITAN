@@ -1,7 +1,7 @@
 import { toast } from "react-toastify";
 import { create } from "zustand";
 
-export const useBusStore = create((set) => ({
+export const useBusStore = create((set, get) => ({
   busData: [],
   loading: false,
   setBuses: (buses) => set({ buses }),
@@ -115,25 +115,54 @@ export const useBusStore = create((set) => ({
 
   approveComplaints: async (complainId) => {
     try {
-      const response = await fetch("/api/complaints", {
-        method: "PUT",
+      const response = await fetch("/api/complaint/approve", {
+        method: "POST",
+        body: JSON.stringify({ complainId }),
+      });
+
+      const result = await response.json();
+
+      // Update the store to change the isVerified status of the complaint
+      set((state) => {
+        const updatedComplaints = state.complaints.map((complaint) =>
+          complaint._id === complainId
+            ? { ...complaint, isVerified: true } // Set isVerified to true
+            : complaint
+        );
+        return { complaints: updatedComplaints };
+      });
+
+      toast.success(result.message || "Complaint status updated successfully");
+    } catch (error) {
+      console.log("Error : ", error);
+      toast.error(error.message || "An error occurred");
+    }
+  },
+
+  deleteComplaints: async (complainId) => {
+    try {
+      const res = await fetch("/api/complaint/approve", {
+        method: "DELETE",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ complainId }),
       });
 
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(
-          result.message || "Error changing the complaint status"
-        );
+      if (!res.ok) {
+        throw new Error("Failed to delete the complaint");
       }
 
-      toast.success(result.message || "Complaint status updated successfully");
+      const data = await res.json();
+      toast.success(data.message || "Complaint deleted successfully");
+
+      set((state) => ({
+        complaints: state.complaints.filter(
+          (complaint) => complaint._id !== complainId
+        ),
+      }));
     } catch (error) {
-      toast.error(error.message || "An error occurred");
+      toast.error(error.message || "Failed to delete the complaint");
     }
   },
 }));
