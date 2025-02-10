@@ -11,6 +11,8 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import Loading from "../loading";
 
+
+// Location Page For all the bus locations
 const LocationPage = () => {
   const [busData, setBusData] = useState([]);
 

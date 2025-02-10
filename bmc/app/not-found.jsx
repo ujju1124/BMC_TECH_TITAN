@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+// Custom 404 Page
 export default function NotFoundPage() {
   return (
     <section className="flex flex-col items-center justify-center min-h-screen bg-white p-10 font-serif">

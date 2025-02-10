@@ -1,7 +1,8 @@
 import React from "react";
 import { Loader } from "lucide-react";
 
-// Dynamic Loading component
+// Loading component
+
 const Loading = () => {
   return (
     <main className="min-h-screen w-screen flex justify-center items-center">

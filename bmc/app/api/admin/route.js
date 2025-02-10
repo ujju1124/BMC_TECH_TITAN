@@ -2,7 +2,7 @@ import { BusData } from "@/models/Bus.models";
 import { connectToDatabase } from "@/utils/db";
 import { NextResponse } from "next/server";
 
-export async function GET(req) {
+export async function POST(req) {
   try {
     const { email } = await req.json();
 
