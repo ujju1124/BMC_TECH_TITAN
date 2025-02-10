@@ -2,6 +2,8 @@
 import React from "react";
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
+import Head from "next/head";
+
 import { MapPin, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
@@ -32,6 +34,14 @@ export default function Home() {
 
   return (
     <UserLayout>
+       <Head>
+        <style>{`
+          @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
+          .bebas-neue {
+            font-family: 'Bebas Neue', sans-serif;
+          }
+        `}</style>
+      </Head>
       <main className="relative min-h-screen flex flex-col items-center justify-center pt-8">
         {/* Background Image */}
         <Image
@@ -48,7 +58,7 @@ export default function Home() {
 
         {/* Hero Section */}
         <div className="relative z-10 text-center text-white px-6 pt-28">
-          <h1 className="text-4xl md:text-6xl font-bold mb-4">
+          <h1 className="bebas-neue text-4xl md:text-6xl font-bold mb-4">
             Smart Mobility for
             <span className="relative flex w-full justify-center overflow-hidden text-center md:pb-4 md:pt-1">
               &nbsp;

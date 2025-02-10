@@ -18,8 +18,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import ComplaintBox from "./ComplainBox";
-import ComplaintList from "./ComplainList";
+import ComplaintBox from "../ComplainBox/page";
+import ComplaintList from "../ComplainList/page";
 import { useBusStore } from "@/store/useBusStore";
 import { useAuth } from "@clerk/nextjs";
 
