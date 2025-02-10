@@ -10,9 +10,9 @@ const poppins = Poppins({
 });
 
 export const metadata = {
-  title: "Path Finder",
+  title: "UrbanFlow",
   description:
-    "Find the routes and paths for public buses and services in your city",
+    "Smart Mobility for safer street",
 };
 
 
