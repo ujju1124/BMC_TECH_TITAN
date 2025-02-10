@@ -28,7 +28,7 @@ export const FooterComponent = () => {
               Stay Connected
             </h2>
             <p className="mb-6 text-muted-foreground">
-              🚀 Smart Mobility: Revolutionizing Urban Travel for a Safer,
+            Smart Mobility: Revolutionizing Urban Travel for a Safer,
               Cleaner, and More Efficient Future
             </p>
             <form className="relative">
