@@ -12,7 +12,8 @@ import useBusStore from "@/store/useBusStore";
 
 function Header() {
   const Menu = [
-    { id: 2, name: "Services", path: "/services" },
+    { id: 1, name: "Services", path: "/services" },
+    { id: 2, name: "Locations", path: "/locations" },
   ];
 
   const { isSignedIn } = useUser();
