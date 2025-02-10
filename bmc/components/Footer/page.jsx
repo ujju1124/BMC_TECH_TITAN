@@ -62,19 +62,26 @@ export const FooterComponent = () => {
                 Service
               </a>
               <a
-                href="#"
+                href="/ComplainBox"
                 className="block transition-colors hover:text-primary"
               >
-                Location
+                ComplainBox
               </a>
+              <a
+                href="/ComplainList"
+                className="block transition-colors hover:text-primary"
+              >
+                ComplainList
+              </a>
+              
             </nav>
           </div>
           <div>
             <h3 className="mb-4 text-lg font-semibold">Contact Us</h3>
             <address className="space-y-2 text-sm not-italic">
-              <p>Address: </p>
-              <p>Phone: (123) 456-7890</p>
-              <p>Email: hello@example.com</p>
+              <p>Address : Chayasal,Lalitpur </p>
+              <p>Phone: (+977) 984-2626369</p>
+              <p>Email: UrbanFlow@gmail.com</p>
             </address>
           </div>
           <div className="relative">
