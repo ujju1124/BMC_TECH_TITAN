@@ -1,20 +1,54 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
+import { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 // Mock data for complaints
 const mockComplaints = [
-  { id: 1, type: "Overload of people in the bus", description: "Bus was extremely crowded during rush hour." },
-  { id: 2, type: "Over pollution", description: "Excessive exhaust fumes from the bus." },
-  { id: 3, type: "Delayed service", description: "Bus arrived 30 minutes late." },
-  { id: 4, type: "Overload of people in the bus", description: "Not enough seats available for passengers." },
-  { id: 5, type: "Unfriendly behavior of staff", description: "Driver was rude to passengers." },
-  { id: 6, type: "Dirty or unhygienic buses", description: "Bus interior was not clean." },
-  { id: 7, type: "Broken facilities/seats", description: "Several seats were damaged." },
+  {
+    id: 1,
+    type: "Overload of people in the bus",
+    description: "Bus was extremely crowded during rush hour.",
+  },
+  {
+    id: 2,
+    type: "Over pollution",
+    description: "Excessive exhaust fumes from the bus.",
+  },
+  {
+    id: 3,
+    type: "Delayed service",
+    description: "Bus arrived 30 minutes late.",
+  },
+  {
+    id: 4,
+    type: "Overload of people in the bus",
+    description: "Not enough seats available for passengers.",
+  },
+  {
+    id: 5,
+    type: "Unfriendly behavior of staff",
+    description: "Driver was rude to passengers.",
+  },
+  {
+    id: 6,
+    type: "Dirty or unhygienic buses",
+    description: "Bus interior was not clean.",
+  },
+  {
+    id: 7,
+    type: "Broken facilities/seats",
+    description: "Several seats were damaged.",
+  },
   { id: 8, type: "Delayed service", description: "Bus didn't show up at all." },
-]
+];
 
 const complaintTypes = [
   "All",
@@ -31,16 +65,18 @@ const complaintTypes = [
   "Unclear route information",
   "Unsafe or poorly lit bus stops",
   "Ticketing system issues",
-]
+];
 
-export function ComplaintList() {
-  const [selectedType, setSelectedType] = useState("All")
+export default function ComplaintList() {
+  const [selectedType, setSelectedType] = useState("All");
 
   const filteredComplaints =
-    selectedType === "All" ? mockComplaints : mockComplaints.filter((complaint) => complaint.type === selectedType)
+    selectedType === "All"
+      ? mockComplaints
+      : mockComplaints.filter((complaint) => complaint.type === selectedType);
 
   return (
-    <Card>
+    <Card className="w-[80vw] mx-auto">
       <CardHeader>
         <CardTitle>Complaint List</CardTitle>
         <CardDescription>View complaints by type</CardDescription>
@@ -72,6 +108,5 @@ export function ComplaintList() {
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }
-
