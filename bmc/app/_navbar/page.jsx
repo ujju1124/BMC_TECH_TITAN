@@ -24,7 +24,7 @@ function Header() {
       <div className="flex items-center gap-10">
         <Link href="/">
           <h1 className="text-xl font-bold text-black cursor-pointer">
-            Path Finder
+            UrbanFlow
           </h1>
         </Link>
 
@@ -44,6 +44,7 @@ function Header() {
               Admin
             </span>
           </Link>
+          
         )}
       </div>
 
