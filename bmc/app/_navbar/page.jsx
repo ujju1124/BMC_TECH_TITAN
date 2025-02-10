@@ -13,7 +13,6 @@ import useBusStore from "@/store/useBusStore";
 function Header() {
   const Menu = [
     { id: 2, name: "Services", path: "/services" },
-    { id: 3, name: "Locations", path: "/locations" },
   ];
 
   const { isSignedIn } = useUser();
@@ -21,11 +20,11 @@ function Header() {
   const { isAdmin } = useBusStore();
 
   return (
-    <div className="fixed w-full backdrop-blur-sm bg-white/10 shadow-md transition-all duration-300 p-4 flex items-center justify-between rounded-b-lg z-50">
+    <div className="fixed w-full backdrop-blur-sm bg-white shadow-md transition-all duration-300 p-4 flex items-center justify-between rounded-b-lg z-50">
       <div className="flex items-center gap-10">
         <Link href="/">
           <h1 className="text-xl font-bold text-black cursor-pointer">
-            UrbanFlow
+            Path Finder
           </h1>
         </Link>
 
