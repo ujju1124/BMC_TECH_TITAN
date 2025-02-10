@@ -18,17 +18,25 @@ export const useBusStore = create((set) => ({
     }
   },
   checkIsAdmin: async (userEmail) => {
-    if (userEmail === process.env.ADMIN_EMAIL) {
+    if (userEmail === process.env.ADMIN_ID) {
       localStorage.setItem("user", JSON.stringify({ isAdmin: true }));
     }
     try {
       set({ loading: true });
       const user = JSON.parse(localStorage.getItem("user"));
       if (!user) {
-        set({ isAdmin: false });
+        const response = await fetch("/admin/", {
+          method: "POST",
+          body: JSON.stringify({ email: userEmail }),
+        });
+        const data = await response.json();
+        if (data.user && data.isAdmin) {
+          localStorage.setItem("user", JSON.stringify({ isAdmin: true }));
+          set({ isAdmin: true });
+        }
       } else {
         if (user && user.isAdmin) {
-            set({ isAdmin: true });
+          set({ isAdmin: true });
         }
       }
       return false;

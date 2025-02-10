@@ -1,31 +1,16 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
-import { useUser } from "@clerk/nextjs";
-
-const AuthContext = createContext(null);
+import useBusStore from "@/store/useBusStore";
+import { useAuth } from "@clerk/nextjs";
+import { useEffect } from "react";
 
 export function AuthProvider({ children }) {
-  const { user, isLoaded } = useUser();
-  const [isAdmin, setIsAdmin] = useState(false);
+  const { checkIsAdmin } = useBusStore();
+
+  const { userId } = useAuth();
 
   useEffect(() => {
-    const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
-    if (
-      isLoaded &&
-      user?.emailAddresses?.[0]?.emailAddress === ADMIN_EMAIL
-    ) {
-      setIsAdmin(true);
-    }
-  }, [isLoaded, user]);
-
-  return (
-    <AuthContext.Provider value={{ user, isAdmin }}>
-      {children}
-    </AuthContext.Provider>
-  );
-}
-
-export function useAuth() {
-  return useContext(AuthContext);
+    checkIsAdmin(userId);
+  }, [checkIsAdmin]);
+  return <>{children}</>;
 }
