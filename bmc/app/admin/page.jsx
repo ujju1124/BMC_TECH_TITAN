@@ -28,8 +28,6 @@ export default AdminPage;
 function Dashboard() {
   const [buses, setBuses] = useState([]);
 
-  console.log(buses);
-
   useEffect(() => {
     fetch("/api/busdata")
       .then((res) => res.json())

@@ -1,33 +1,22 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   MapContainer,
   TileLayer,
   Marker,
   Popup,
-  Polyline,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import Loading from "../loading";
-
+import useBusStore from "@/store/useBusStore";
 
 // Location Page For all the bus locations
 const LocationPage = () => {
-  const [busData, setBusData] = useState([]);
-
+  const { busData, fetchBuses } = useBusStore();
   useEffect(() => {
-    const getLocations = async () => {
-      try {
-        const response = await fetch("/api/busdata/", { method: "GET" });
-        const data = await response.json();
-        setBusData(data.busData); // Store all bus data
-      } catch (error) {
-        console.error("Error while fetching the locations:", error);
-      }
-    };
-    getLocations();
-  }, []);
+    fetchBuses();
+  }, [fetchBuses]);
 
   if (!busData.length) {
     return <Loading />;
