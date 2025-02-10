@@ -10,7 +10,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Edit, Trash2, CheckCircle } from "lucide-react";
+import { Trash2, CheckCircle } from "lucide-react";
+import { toast } from "react-toastify";
+import Link from "next/link";
 
 const AdminPage = () => {
   return (
@@ -25,7 +27,8 @@ export default AdminPage;
 
 function Dashboard() {
   const [buses, setBuses] = useState([]);
-  console.log(buses.busData);
+
+  console.log(buses);
 
   useEffect(() => {
     fetch("/api/busdata")
@@ -34,22 +37,61 @@ function Dashboard() {
       .catch((error) => console.error("Error fetching bus data:", error));
   }, []);
 
-  const handleEdit = (id) => {
-    console.log(`Edit bus with id: ${id}`);
+  const handleDelete = async (id) => {
+    const verify = confirm("Are you sure you want to delete this bus data?");
+    if (verify) {
+      try {
+        const res = await fetch("/api/admin/", {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ id }),
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          if (data.message) {
+            toast.success(data.message);
+            setBuses(buses.filter((bus) => bus._id !== id));
+          }
+        } else {
+          toast.error("Failed to delete bus data");
+        }
+      } catch (error) {
+        toast.error("Error deleting bus data");
+      }
+    }
   };
 
-  const handleDelete = (id) => {
-    setBuses(buses.filter((bus) => bus.id !== id));
-  };
+  const handleVerify = async (id) => {
+    try {
+      const res = await fetch("/api/admin/", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ busId: id }),
+      });
 
-  const handleVerify = (id) => {
-    setBuses(
-      buses.length > 0
-        ? buses.map((bus) =>
-            bus.id === id ? { ...bus, verified: !bus.verified } : bus
+      if (res.ok) {
+        const data = await res.json();
+        if (data.message) {
+          toast.success(data.message);
+        }
+        setBuses(
+          buses.map((bus) =>
+            bus._id === id ? { ...bus, isVerified: !bus.isVerified } : bus
           )
-        : []
-    );
+        );
+      } else {
+        toast.error("Failed to verify bus data");
+        console.log(error.message);
+      }
+    } catch (error) {
+      toast.error("Error verifying bus data");
+      console.log(error.message);
+    }
   };
 
   return (
@@ -64,39 +106,33 @@ function Dashboard() {
       <TableBody>
         {buses.length > 0 &&
           buses.map((bus, index) => (
-            <TableRow key={bus.id}>
+            <TableRow key={bus._id}>
               <TableCell className="font-medium">{index + 1}</TableCell>
               <TableCell>
-                <div>
-                  <p>
-                    <strong>Bus Number:</strong> {bus.busNumber}
-                  </p>
-                  <p>
-                    <strong>Parent Company:</strong> {bus.parentCompany}
-                  </p>
-                </div>
+                <Link href={`/admin/${bus._id}`} passHref>
+                  <div>
+                    <p>
+                      <strong>Bus Number:</strong> {bus.busNumber}
+                    </p>
+                    <p>
+                      <strong>Parent Company:</strong> {bus.parentCompany}
+                    </p>
+                  </div>
+                </Link>
               </TableCell>
               <TableCell className="text-right">
                 <Button
                   variant="outline"
                   size="icon"
                   className="mr-2"
-                  onClick={() => handleEdit(bus.id)}
-                >
-                  <Edit className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="mr-2"
-                  onClick={() => handleDelete(bus.id)}
+                  onClick={() => handleDelete(bus._id)}
                 >
                   <Trash2 className="h-4 w-4" />
                 </Button>
                 <Button
-                  variant={bus.verified ? "default" : "outline"}
+                  variant={bus.isVerified ? "default" : "outline"}
                   size="icon"
-                  onClick={() => handleVerify(bus.id)}
+                  onClick={() => handleVerify(bus._id)}
                 >
                   <CheckCircle className="h-4 w-4" />
                 </Button>

@@ -63,16 +63,30 @@ export async function DELETE(req) {
 
 export async function PUT(req) {
   try {
+    // Parse the JSON body from the request
     const { busId } = await req.json();
-    const isAvialable = await BusData.findOne({ _id: busId });
-    if (!isAvialable) {
+
+    if (!busId) {
+      return NextResponse.json(
+        { message: "Bus ID is required" },
+        { status: 400 }
+      );
+    }
+
+    // Find the bus by its ID
+    const bus = await BusData.findOne({ _id: busId });
+
+    if (!bus) {
       return NextResponse.json({ message: "Bus not found" }, { status: 404 });
     }
-    isAvialable.isAvailable = !isAvialable.isAvailable;
-    await isAvialable.save();
+
+    // Toggle the availability status of the bus
+    bus.isAvailable = !bus.isAvailable;
+    await bus.save();
+
     return NextResponse.json({
-      message: "BusData status changed successfully",
-      isAvialable,
+      message: "Bus availability status changed successfully",
+      bus, // Return the updated bus object
     });
   } catch (error) {
     return NextResponse.json(
