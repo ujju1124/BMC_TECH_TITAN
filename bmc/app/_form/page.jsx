@@ -1,10 +1,11 @@
 "use client";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Trash2, Plus, Bus } from "lucide-react";
+import { toast } from "react-toastify";
 
 const BusRouteForm = () => {
   const [stops, setStops] = useState([{ stopName: "", arrivalTime: "" }]);
@@ -13,14 +14,46 @@ const BusRouteForm = () => {
     setStops([...stops, { stopName: "", arrivalTime: "" }]);
   };
 
+  const formRef = useRef(null);
+
   const removeStop = (index) => {
     const newStops = stops.filter((_, i) => i !== index);
     setStops(newStops);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted");
+    if (!formRef.current) return;
+
+    const formData = new FormData(formRef.current);
+
+    // Collect stops data
+    const stopsData = stops.map((_, index) => ({
+      stopName: formData.get(`stopName-${index}`),
+      arrivalTime: formData.get(`arrivalTime-${index}`),
+    }));
+
+    const data = {
+      busNumber: formData.get("busNumber"),
+      routeName: formData.get("routeName"),
+      companyName: formData.get("company"),
+      stops: stopsData,
+    };
+    try {
+      const response = await fetch("/api/busdata", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        toast.success("Bus route registered successfully");
+      } else {
+        toast.error("Error registering bus route");
+      }
+    } catch (error) {
+      toast.error("Error submitting form:", error);
+    }
   };
 
   return (
@@ -39,7 +72,7 @@ const BusRouteForm = () => {
         </div>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="busNumber">Bus Number</Label>
@@ -48,6 +81,7 @@ const BusRouteForm = () => {
                 placeholder="Enter bus number"
                 className="w-full"
                 required
+                name="busNumber"
               />
             </div>
 
@@ -58,6 +92,7 @@ const BusRouteForm = () => {
                 placeholder="Enter route name"
                 className="w-full"
                 required
+                name="routeName"
               />
             </div>
           </div>
@@ -69,6 +104,7 @@ const BusRouteForm = () => {
               placeholder="Enter bus company name"
               className="w-full"
               required
+              name="company"
             />
             <p className="text-sm text-muted-foreground">
               Enter the name of the company that owns this bus
@@ -114,6 +150,7 @@ const BusRouteForm = () => {
                         id={`stopName-${index}`}
                         placeholder="Enter stop name"
                         required
+                        name={`stopName-${index}`}
                       />
                     </div>
 
@@ -121,7 +158,11 @@ const BusRouteForm = () => {
                       <Label htmlFor={`arrivalTime-${index}`}>
                         Arrival Time
                       </Label>
-                      <Input id={`arrivalTime-${index}`} type="time" />
+                      <Input
+                        name={`arrivalTime-${index}`}
+                        id={`arrivalTime-${index}`}
+                        type="time"
+                      />
                     </div>
                   </div>
                 </div>
