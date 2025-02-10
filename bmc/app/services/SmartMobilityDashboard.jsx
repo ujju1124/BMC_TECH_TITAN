@@ -11,14 +11,27 @@ import {
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import ComplaintBox from "./ComplainBox";
 import ComplaintList from "./ComplainList";
+import { useBusStore } from "@/store/useBusStore";
+import { useAuth } from "@clerk/nextjs";
 
 export default function SmartMobilityDashboard() {
   const [formData, setFormData] = useState({
     currentLocation: "",
     destination: "",
+    role: "",
+    phoneNumber: "",
   });
+
+  const { findRidesAround } = useBusStore();
 
   // Handle input change
   const handleChange = (e) => {
@@ -28,10 +41,24 @@ export default function SmartMobilityDashboard() {
     });
   };
 
+  const { userId } = useAuth();
+
+  // Handle role selection
+  const handleRoleChange = (role) => {
+    setFormData((prev) => ({ ...prev, role }));
+  };
+
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Submitted:", formData);
+    const data = {
+      clerkId: userId,
+      startLocation: formData.currentLocation,
+      endLocation: formData.destination,
+      role: formData.role,
+      phoneNumber: formData.phoneNumber,
+    };
+    await findRidesAround(data);
   };
 
   return (
@@ -70,8 +97,40 @@ export default function SmartMobilityDashboard() {
                 required
               />
             </div>
-            <Button type="submit" className="w-full mt-4">
-              Find Peoples around me
+            <div>
+              <Label htmlFor="phoneNumber">Phone Number</Label>
+              <Input
+                id="phoneNumber"
+                type="text"
+                placeholder="Enter your phoneNumber"
+                value={formData.phoneNumber}
+                onChange={handleChange}
+                className="mt-1"
+                required
+              />
+            </div>
+            <div>
+              <Label htmlFor="role">Select Role</Label>
+              <Select onValueChange={handleRoleChange}>
+                <SelectTrigger className="mt-1">
+                  <SelectValue placeholder="Select your role" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="driver">Driver</SelectItem>
+                  <SelectItem value="passenger">Passenger</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <Button
+              disabled={
+                !formData.currentLocation ||
+                !formData.destination ||
+                !formData.role
+              }
+              type="submit"
+              className="w-full mt-4"
+            >
+              Find People Around Me
             </Button>
           </form>
         </CardContent>

@@ -9,7 +9,7 @@ export async function GET() {
     const complaints = await Complaint.find();
     return NextResponse.json({
       message: "Get all complaints",
-      complaints,
+      complaints: complaints,
       success: true,
     });
   } catch (error) {
@@ -24,7 +24,6 @@ export async function POST(req) {
       companyName,
       email,
       phoneNum,
-      imageUrl,
       complaintType,
       complaintDescription,
       clerkId,
@@ -35,7 +34,6 @@ export async function POST(req) {
       companyName,
       email,
       phoneNum,
-      imageUrl,
       complaintType,
       complaintDescription,
       clerkId,
@@ -51,7 +49,6 @@ export async function POST(req) {
       companyName,
       email,
       phoneNum,
-      imageUrl,
       complaintType,
       complaintDescription,
       clerkId,
@@ -59,6 +56,10 @@ export async function POST(req) {
     });
 
     await newComplaint.save();
+    return NextResponse.json(
+      { message: "Complaint added successfully", success: true },
+      { status: 201 }
+    );
   } catch (error) {
     return NextResponse.json(
       { message: error.message, success: false },

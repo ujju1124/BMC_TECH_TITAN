@@ -51,7 +51,7 @@ export const useBusStore = create((set) => ({
 
   addComplaint: async (complainData) => {
     try {
-      const response = await fetch("/api/complaints", {
+      const response = await fetch("/api/complaint", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -62,9 +62,10 @@ export const useBusStore = create((set) => ({
       const result = await response.json();
 
       if (response.ok) {
-        console.log("Complaint added successfully:", result);
+        toast.success("Complaint added successfully");
       } else {
-        console.error("Error adding complaint:", result.message);
+        console.log(result);
+        toast.error("Error adding complaint:", result);
       }
     } catch (error) {
       console.error("Network or server error:", error);
@@ -72,14 +73,29 @@ export const useBusStore = create((set) => ({
   },
 
   findRidesAround: async (locationData) => {
-    const { startLocation, endLocation, clerkId, role } = locationData;
+    const { startLocation, endLocation, clerkId, role, phoneNumber } =
+      locationData;
     try {
       const res = await fetch("/api/activeroute", {
         method: "POST",
-        body: JSON.stringify({ startLocation, endLocation, clerkId }),
+        body: JSON.stringify({
+          startLocation,
+          endLocation,
+          clerkId,
+          role,
+          phoneNumber,
+        }),
       });
       const data = await res.json();
-      set({ ridesAround: [...data.user] });
+      if (data.newUser) {
+        toast.success(data.message);
+        return;
+      }
+      toast.success(
+        `Any active ${
+          role === "passenger" ? "driver" : "passenger"
+        } not founded around you try again after some time`
+      );
     } catch (error) {
       toast.error(error.message);
     }

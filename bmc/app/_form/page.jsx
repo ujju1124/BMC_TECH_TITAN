@@ -48,6 +48,7 @@ const BusRouteForm = () => {
 
       if (response.ok) {
         toast.success("Bus route registered successfully");
+        formRef?.current.reset();
       } else {
         toast.error("Error registering bus route");
       }

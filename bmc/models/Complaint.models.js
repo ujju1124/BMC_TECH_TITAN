@@ -14,10 +14,6 @@ const complaintModel = new Schema(
       type: String,
       required: true,
     },
-    imageUrl: {
-      type: String,
-      required: true,
-    },
     complaintType: {
       type: String,
       required: true,
@@ -42,4 +38,4 @@ const complaintModel = new Schema(
   { timestamps: true }
 );
 
-export const Complaint = models.Complaint | model("Complaint", complaintModel);
+export const Complaint = models.Complaint || model("Complaint", complaintModel);

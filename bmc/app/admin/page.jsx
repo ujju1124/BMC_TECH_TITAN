@@ -72,6 +72,8 @@ function Dashboard() {
         body: JSON.stringify({ busId: id }),
       });
 
+      console.log("Res : ", res);
+
       if (res.ok) {
         const data = await res.json();
         if (data.message) {

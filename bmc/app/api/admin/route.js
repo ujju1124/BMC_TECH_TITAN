@@ -65,6 +65,7 @@ export async function PUT(req) {
   try {
     await connectToDatabase();
     const { busId } = await req.json();
+    console.log("BusId: ", busId);
 
     if (!busId) {
       return NextResponse.json(
@@ -80,13 +81,18 @@ export async function PUT(req) {
       return NextResponse.json({ message: "Bus not found" }, { status: 404 });
     }
 
-    // Toggle the availability status of the bus
-    bus.isAvailable = !bus.isAvailable;
-    await bus.save();
+    const updatedBus = await BusData.findOneAndUpdate(
+      { _id: busId },
+      { $bit: { isAvailable: { xor: 1 } } }, // Toggle boolean value
+      { new: true }
+    );
+
+    if (!updatedBus) {
+      return NextResponse.json({ message: "Bus not found" }, { status: 404 });
+    }
 
     return NextResponse.json({
       message: "Bus availability status changed successfully",
-      bus, // Return the updated bus object
     });
   } catch (error) {
     return NextResponse.json(

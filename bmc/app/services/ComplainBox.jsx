@@ -1,9 +1,12 @@
 "use client";
 
+import { toast } from "react-toastify";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useAuth } from "@clerk/nextjs";
+import { useBusStore } from "@/store/useBusStore";
 import {
   Card,
   CardContent,
@@ -44,7 +47,12 @@ export default function ComplaintBox() {
     complaintType: "",
     complaintDescription: "",
     image: null,
+    phoneNumber: "",
   });
+
+  const { addComplaint } = useBusStore();
+
+  const { userId } = useAuth();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -55,35 +63,24 @@ export default function ComplaintBox() {
     setComplaintData((prev) => ({ ...prev, complaintType: value }));
   };
 
-  const handleImageChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      setComplaintData((prev) => ({ ...prev, image: e.target.files[0] }));
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Complaint submitted:", complaintData);
 
-    if (complaintData.image) {
-      const formData = new FormData();
-      formData.append("file", complaintData.image);
-      formData.append("upload_preset", "your_cloudinary_upload_preset");
-
-      try {
-        const response = await fetch(
-          "https://api.cloudinary.com/v1_1/your_cloud_name/image/upload",
-          {
-            method: "POST",
-            body: formData,
-          }
-        );
-        const data = await response.json();
-        console.log("Image uploaded to Cloudinary:", data.secure_url);
-      } catch (error) {
-        console.error("Error uploading image to Cloudinary:", error);
-      }
+    if (!userId) {
+      toast.error("Sign in to add your complaint");
+      return;
     }
+
+    const complaintPayload = {
+      companyName: complaintData.busCompanyName,
+      email: complaintData.email,
+      phoneNum: complaintData.phoneNumber,
+      busNumber: complaintData.busNumber,
+      complaintType: complaintData.complaintType,
+      complaintDescription: complaintData.complaintDescription,
+      clerkId: userId, // Assuming you're using Clerk for authentication and have the user ID
+    };
+     addComplaint(complaintPayload);
 
     setComplaintData({
       busCompanyName: "",
@@ -91,7 +88,7 @@ export default function ComplaintBox() {
       busNumber: "",
       complaintType: "",
       complaintDescription: "",
-      image: null,
+      phoneNumber: "",
     });
   };
 
@@ -122,6 +119,18 @@ export default function ComplaintBox() {
               id="email"
               name="email"
               value={complaintData.email}
+              onChange={handleInputChange}
+              required
+              className="mt-1"
+            />
+          </div>
+          <div>
+            <Label htmlFor="phoneNumber">Phone No. </Label>
+            <Input
+              type="number"
+              id="phoneNumber"
+              name="phoneNumber"
+              value={complaintData.phoneNumber}
               onChange={handleInputChange}
               required
               className="mt-1"
@@ -167,17 +176,6 @@ export default function ComplaintBox() {
               required
               className="mt-1"
               rows={4}
-            />
-          </div>
-          <div>
-            <Label htmlFor="image">Upload Image</Label>
-            <Input
-              type="file"
-              id="image"
-              name="image"
-              onChange={handleImageChange}
-              accept="image/*"
-              className="mt-1"
             />
           </div>
           <Button type="submit">Submit Complaint</Button>

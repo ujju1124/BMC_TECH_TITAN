@@ -1,6 +1,7 @@
 import { connectToDatabase } from "@/utils/db";
 import opencage from "opencage-api-client";
 import { User } from "../../../models/User.model";
+import { NextResponse } from "next/server";
 
 const OPEN_CAGE_API_KEY = process.env.OPEN_CAGE_API_KEY;
 
@@ -22,7 +23,8 @@ async function getCoordinates(location) {
 // To Update The User's Active Route
 export async function POST(req) {
   try {
-    const { clerkId, startLocation, endLocation } = await req.json();
+    const { clerkId, startLocation, endLocation, role, phoneNumber } =
+      await req.json();
 
     if (!clerkId || !startLocation || !endLocation) {
       return new Response(
@@ -45,13 +47,34 @@ export async function POST(req) {
           start: startCoordinates,
           end: endCoordinates,
         },
+        role: role,
       },
       { new: true }
     );
 
     if (!updatedUser) {
-      return new Response(JSON.stringify({ error: "User not found" }), {
-        status: 404,
+      const newUser = await User.create({
+        clerkId: clerkId,
+        role,
+        phoneNumber,
+        location: {
+          latitude: null,
+          longitude: null,
+        },
+        activeRoute: {
+          start: {
+            latitude: null,
+            longitude: null,
+          },
+          ene: {
+            latitude: null,
+            longitude: null,
+          },
+        },
+      });
+      return NextResponse.json({
+        message: "User registered successfully",
+        newUser,
       });
     }
 
