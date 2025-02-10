@@ -4,6 +4,7 @@ import { User } from "../../../models/User.model";
 
 const OPEN_CAGE_API_KEY = process.env.OPEN_CAGE_API_KEY;
 
+// Get the coordinates for a location using the OpenCage API
 async function getCoordinates(location) {
   const geoData = await opencage.geocode({
     q: location,

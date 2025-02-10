@@ -5,6 +5,8 @@ export const metadata = {
   title: "Avilable Locations - Path Finder",
 };
 
+
+// Layout for Locations
 const LocationsLayout = ({ children }) => {
   return (
     <main className="min-h-screen w-screen overflow-x-hidden">
