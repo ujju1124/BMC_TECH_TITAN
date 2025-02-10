@@ -7,7 +7,7 @@ import Two from "@/public/TrafficImage/_3fe98b7e-e1ce-49be-9140-12d48f084e40.jpe
 import Three from "@/public/TrafficImage/_68f373f6-282a-490d-8bea-d121085324e8.jpeg";
 import Four from "@/public/TrafficImage/_ccd55106-13df-412f-a7ef-1b5e54589451.jpeg";
 import Five from "@/public/TrafficImage/_f709387b-767e-4abb-98db-7923c3d59e38.jpeg";
-import Six from "@/public/TrafficImage/ok.jpeg";
+import Six from "@/public/TrafficImage/safetyAndAccessibility.svg";
 
 const content = [
   {
