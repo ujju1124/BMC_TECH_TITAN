@@ -9,6 +9,7 @@ import {
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import Loading from "../loading";
 
 const LocationPage = () => {
   const [busData, setBusData] = useState([]);
@@ -40,17 +41,13 @@ const LocationPage = () => {
   }, [busStops]);
 
   if (!busData.length || !busStops.length) {
-    return (
-      <div className="min-h-screen flex items-center justify-center text-gray-600 dark:text-gray-300">
-        Loading...
-      </div>
-    );
+    return <Loading />;
   }
 
   return (
     <div className="min-h-screen w-screen p-4 bg-gray-100 dark:bg-gray-900">
       <h1 className="text-2xl font-bold text-center text-gray-800 dark:text-white">
-        Bus Route Details
+        Avilable Bus Route Locations
       </h1>
       <div className="max-w-3xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 mt-4">
         <h2 className="text-xl font-semibold text-gray-700 dark:text-white">
@@ -67,7 +64,12 @@ const LocationPage = () => {
           <ul className="list-disc pl-6 text-gray-600 dark:text-gray-300">
             {busStops.map((stop) => (
               <li key={stop._id} className="mt-1">
-                {stop.stopName}
+                {stop.stopName}{" "}
+                {stop.arrivalTime && (
+                  <span className="text-gray-400 dark:text-gray-500">
+                    ({stop.arrivalTime})
+                  </span>
+                )}
               </li>
             ))}
           </ul>
