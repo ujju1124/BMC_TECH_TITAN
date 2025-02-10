@@ -5,9 +5,9 @@ import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
-    const { busNumber, routeName, stops } = await req.json();
+    const { busNumber, routeName, stops, companyName } = await req.json();
 
-    if (!busNumber || !routeName || !stops || stops.length === 0) {
+    if (!busNumber || !routeName || !stops || stops.length === 0 || !companyName) {
       return new Response(
         JSON.stringify({ error: "Missing required fields" }),
         { status: 400 }
@@ -38,6 +38,7 @@ export async function POST(req) {
       busNumber,
       routeName,
       stops: stopData,
+      companyName,
     });
 
     return new Response(JSON.stringify(newBusData), { status: 201 });
