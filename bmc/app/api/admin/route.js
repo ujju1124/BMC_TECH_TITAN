@@ -63,7 +63,7 @@ export async function DELETE(req) {
 
 export async function PUT(req) {
   try {
-    // Parse the JSON body from the request
+    await connectToDatabase();
     const { busId } = await req.json();
 
     if (!busId) {
