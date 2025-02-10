@@ -8,6 +8,7 @@ import Image from "next/image";
 import Background from "@/public/background.jpg";
 import UserLayout from "@/components/layouts/UsersLayout";
 import Link from 'next/link';
+import About from "@/app/About/page"
 
 export default function Home() {
   const [titleNumber, setTitleNumber] = useState(0);
@@ -88,14 +89,16 @@ export default function Home() {
         </div>
 
         {/* About Section */}
-        <section className="relative z-10 pt-12 mt-[90px] px-6 w-full text-center">
+        {/* <section className="relative z-10 pt-12 mt-[90px] px-6 w-full text-center">
           <h2 className="text-3xl font-bold mb-4 pt-24 text-white lg:text-black">
             About Our Solution
           </h2>
           <p className="text-lg mb-6 max-w-3xl mx-auto text-white lg:text-black">
             We use real-time data, user-driven reporting, and smart technology to improve urban transport. Our platform helps commuters find the best routes, report issues like overcrowding and pollution, and make public transport safer and more efficient.
           </p>
-        </section>
+        </section> */}
+        <About />
+
       </main>
     </UserLayout>
   );

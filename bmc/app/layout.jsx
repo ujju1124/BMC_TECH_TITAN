@@ -22,8 +22,8 @@ export default function RootLayout({ children }) {
     <ClerkProvider>
       <AuthProvider>
         <html lang="en" suppressHydrationWarning>
-          <body className={`${poppins.subsets} font-Poppins antialiased`}>
-            {children}
+        <body className={`${poppins.className} antialiased`}>
+        {children}
             <ToastContainer />
           </body>
         </html>
