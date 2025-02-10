@@ -1,5 +1,5 @@
 "use client";
-import { use, useEffect } from "react";
+import { useEffect } from "react";
 import useBusStore from "@/store/useBusStore";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
@@ -16,7 +16,11 @@ export default function Page({ params }) {
   const busDetails = busData.find((bus) => bus._id === busId);
 
   if (!busDetails) {
-    return <div>Loading...</div>; // Show loading if busDetails isn't found
+    return (
+      <div className="min-h-screen w-screen flex justify-center items-center font-bold text-emerald-400">
+        Loading...
+      </div>
+    ); // Show loading if busDetails isn't found
   }
 
   return (
