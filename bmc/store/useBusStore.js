@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { create } from "zustand";
 
 export const useBusStore = create((set) => ({
@@ -5,6 +6,8 @@ export const useBusStore = create((set) => ({
   loading: false,
   setBuses: (buses) => set({ buses }),
   isAdmin: false,
+  complaints: [],
+  ridesAround: [],
   fetchBuses: async () => {
     set({ loading: true });
     try {
@@ -17,7 +20,7 @@ export const useBusStore = create((set) => ({
       set({ loading: false });
     }
   },
-  
+
   checkIsAdmin: async (userEmail) => {
     if (userEmail === process.env.ADMIN_ID) {
       localStorage.setItem("user", JSON.stringify({ isAdmin: true }));
@@ -48,12 +51,75 @@ export const useBusStore = create((set) => ({
 
   addComplaint: async (complainData) => {
     try {
-    } catch (error) {}
+      const response = await fetch("/api/complaints", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(complainData),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        console.log("Complaint added successfully:", result);
+      } else {
+        console.error("Error adding complaint:", result.message);
+      }
+    } catch (error) {
+      console.error("Network or server error:", error);
+    }
   },
 
-  findRidesAround: async (locationData) => {},
+  findRidesAround: async (locationData) => {
+    const { startLocation, endLocation, clerkId, role } = locationData;
+    try {
+      const res = await fetch("/api/activeroute", {
+        method: "POST",
+        body: JSON.stringify({ startLocation, endLocation, clerkId }),
+      });
+      const data = await res.json();
+      set({ ridesAround: [...data.user] });
+    } catch (error) {
+      toast.error(error.message);
+    }
+  },
 
-  getComplaints: async () => {},
+  getComplaints: async () => {
+    try {
+      const res = await fetch("/api/complaint", {
+        method: "GET",
+      });
+      const data = await res.json();
+      set({ complaints: [...data.complaints] });
+    } catch (error) {
+      toast.error(error.message);
+    }
+  },
+
+  approveComplaints: async (complainId) => {
+    try {
+      const response = await fetch("/api/complaints", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ complainId }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          result.message || "Error changing the complaint status"
+        );
+      }
+
+      toast.success(result.message || "Complaint status updated successfully");
+    } catch (error) {
+      toast.error(error.message || "An error occurred");
+    }
+  },
 }));
 
 export default useBusStore;
