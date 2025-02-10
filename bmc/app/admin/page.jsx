@@ -119,7 +119,7 @@ function Dashboard() {
                       <strong>Bus Number:</strong> {bus.busNumber}
                     </p>
                     <p>
-                      <strong>Parent Company:</strong> {bus.parentCompany}
+                      <strong>Parent Company:</strong> {bus.companyName ? bus.companyName : "N/A"}
                     </p>
                   </div>
                 </Link>

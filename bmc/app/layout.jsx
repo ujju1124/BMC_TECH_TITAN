@@ -10,9 +10,9 @@ const poppins = Poppins({
 });
 
 export const metadata = {
-  title: "Path Finder",
+  title: "UrbanFlow",
   description:
-    "Find the routes and paths for public buses and services in your city",
+    "Smart Mobility for safer street",
 };
 
 
@@ -22,8 +22,8 @@ export default function RootLayout({ children }) {
     <ClerkProvider>
       <AuthProvider>
         <html lang="en" suppressHydrationWarning>
-          <body className={`${poppins.subsets} font-Poppins antialiased`}>
-            {children}
+        <body className={`${poppins.className} antialiased`}>
+        {children}
             <ToastContainer />
           </body>
         </html>
