@@ -1,12 +1,24 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Label } from "@/components/ui/label"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
 
 const complaintTypes = [
   "Overload of people in the bus",
@@ -22,51 +34,54 @@ const complaintTypes = [
   "Unclear route information",
   "Unsafe or poorly lit bus stops",
   "Ticketing system issues",
-]
+];
 
-export function ComplaintBox() {
+export default function ComplaintBox() {
   const [complaintData, setComplaintData] = useState({
     busCompanyName: "",
     email: "",
     busNumber: "",
     complaintType: "",
     complaintDescription: "",
-    image: null as File | null,
-  })
+    image: null,
+  });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
-    setComplaintData((prev) => ({ ...prev, [name]: value }))
-  }
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setComplaintData((prev) => ({ ...prev, [name]: value }));
+  };
 
-  const handleSelectChange = (value: string) => {
-    setComplaintData((prev) => ({ ...prev, complaintType: value }))
-  }
+  const handleSelectChange = (value) => {
+    setComplaintData((prev) => ({ ...prev, complaintType: value }));
+  };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
-      setComplaintData((prev) => ({ ...prev, image: e.target.files![0] }))
+      setComplaintData((prev) => ({ ...prev, image: e.target.files[0] }));
     }
-  }
+  };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    console.log("Complaint submitted:", complaintData)
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("Complaint submitted:", complaintData);
 
     if (complaintData.image) {
-      const formData = new FormData()
-      formData.append("file", complaintData.image)
-      formData.append("upload_preset", "your_cloudinary_upload_preset")
+      const formData = new FormData();
+      formData.append("file", complaintData.image);
+      formData.append("upload_preset", "your_cloudinary_upload_preset");
 
       try {
-        const response = await fetch("https://api.cloudinary.com/v1_1/your_cloud_name/image/upload", {
-          method: "POST",
-          body: formData,
-        })
-        const data = await response.json()
-        console.log("Image uploaded to Cloudinary:", data.secure_url)
+        const response = await fetch(
+          "https://api.cloudinary.com/v1_1/your_cloud_name/image/upload",
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+        const data = await response.json();
+        console.log("Image uploaded to Cloudinary:", data.secure_url);
       } catch (error) {
-        console.error("Error uploading image to Cloudinary:", error)
+        console.error("Error uploading image to Cloudinary:", error);
       }
     }
 
@@ -77,11 +92,11 @@ export function ComplaintBox() {
       complaintType: "",
       complaintDescription: "",
       image: null,
-    })
-  }
+    });
+  };
 
   return (
-    <Card>
+    <Card className="w-[80vw] mx-auto">
       <CardHeader>
         <CardTitle>Complaint Box</CardTitle>
         <CardDescription>Submit your concerns or report issues</CardDescription>
@@ -126,7 +141,10 @@ export function ComplaintBox() {
           </div>
           <div>
             <Label htmlFor="complaintType">Complaint Type</Label>
-            <Select onValueChange={handleSelectChange} value={complaintData.complaintType}>
+            <Select
+              onValueChange={handleSelectChange}
+              value={complaintData.complaintType}
+            >
               <SelectTrigger className="mt-1">
                 <SelectValue placeholder="Select complaint type" />
               </SelectTrigger>
@@ -153,12 +171,18 @@ export function ComplaintBox() {
           </div>
           <div>
             <Label htmlFor="image">Upload Image</Label>
-            <Input type="file" id="image" name="image" onChange={handleImageChange} accept="image/*" className="mt-1" />
+            <Input
+              type="file"
+              id="image"
+              name="image"
+              onChange={handleImageChange}
+              accept="image/*"
+              className="mt-1"
+            />
           </div>
           <Button type="submit">Submit Complaint</Button>
         </form>
       </CardContent>
     </Card>
-  )
+  );
 }
-

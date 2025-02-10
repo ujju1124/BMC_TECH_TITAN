@@ -17,6 +17,7 @@ export const useBusStore = create((set) => ({
       set({ loading: false });
     }
   },
+  
   checkIsAdmin: async (userEmail) => {
     if (userEmail === process.env.ADMIN_ID) {
       localStorage.setItem("user", JSON.stringify({ isAdmin: true }));
@@ -44,6 +45,15 @@ export const useBusStore = create((set) => ({
       console.error("Error while checking admin status:", error);
     }
   },
+
+  addComplaint: async (complainData) => {
+    try {
+    } catch (error) {}
+  },
+
+  findRidesAround: async (locationData) => {},
+
+  getComplaints: async () => {},
 }));
 
 export default useBusStore;

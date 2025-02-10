@@ -8,6 +8,7 @@ import {
   UserButton,
   useUser,
 } from "@clerk/nextjs";
+import useBusStore from "@/store/useBusStore";
 
 function Header() {
   const Menu = [
@@ -16,6 +17,8 @@ function Header() {
   ];
 
   const { isSignedIn } = useUser();
+
+  const { isAdmin } = useBusStore();
 
   return (
     <div className="fixed w-full backdrop-blur-sm bg-white/10 shadow-md transition-all duration-300 p-4 flex items-center justify-between rounded-b-lg z-50">
@@ -36,6 +39,13 @@ function Header() {
             </Link>
           ))}
         </ul>
+        {isAdmin && (
+          <Link href={"/admin"}>
+            <span className="cursor-pointer hover:scale-105 transition-all ease-in-out text-black">
+              Admin
+            </span>
+          </Link>
+        )}
       </div>
 
       {/* User Authentication */}
