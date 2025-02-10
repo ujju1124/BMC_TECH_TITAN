@@ -8,6 +8,7 @@ import {
   ArrowRightIcon,
 } from "lucide-react";
 import Form from "@/app/_form/page";
+import Game from "@/app/game/page";
 
 export default function Page() {
   return (
@@ -73,8 +74,13 @@ export const FooterComponent = () => {
               >
                 ComplainList
               </a>
-              
-            </nav>
+              <a
+                href="/Game"
+                className="block transition-colors hover:text-primary"
+              >
+                Awareness Game
+              </a>
+                        </nav>
           </div>
           <div>
             <h3 className="mb-4 text-lg font-semibold">Contact Us</h3>
